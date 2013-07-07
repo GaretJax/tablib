@@ -27,14 +27,14 @@ def import_set(dset, in_stream):
     """Returns dataset from JSON stream."""
 
     dset.wipe()
-    dset.dict = json.loads(in_stream)
+    dset.dict = json.loads(in_stream.read())
 
 
 def import_book(dbook, in_stream):
     """Returns databook from JSON stream."""
 
     dbook.wipe()
-    for sheet in json.loads(in_stream):
+    for sheet in json.loads(in_stream.read()):
         data = tablib.Dataset()
         data.title = sheet['title']
         data.dict = sheet['data']
@@ -44,7 +44,10 @@ def import_book(dbook, in_stream):
 def detect(stream):
     """Returns True if given stream is valid JSON."""
     try:
-        json.loads(stream)
+        json.loads(stream.read())
         return True
     except ValueError:
         return False
+    finally:
+        stream.seek(0)
+
