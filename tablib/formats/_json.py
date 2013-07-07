@@ -50,4 +50,3 @@ def detect(stream):
         return False
     finally:
         stream.seek(0)
-
